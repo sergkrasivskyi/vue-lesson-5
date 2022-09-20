@@ -6,7 +6,8 @@
     <div class="links">
       <router-link class="header-nav__link" to="/">Home</router-link> |
       <router-link class="header-nav__link" to="/about">About</router-link> |
-      <router-link class="header-nav__link" to="/search">Search</router-link>
+      <router-link class="header-nav__link" to="/search">Search</router-link> |
+      <router-link class="header-nav__link" to="/game">Game</router-link>
     </div>
   </nav>
 </template>

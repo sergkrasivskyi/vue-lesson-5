@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import AppSearchView from "../views/AppSearchView.vue";
+import AppGameView from "../views/AppGameView.vue";
 
 const routes = [
   {
@@ -21,6 +22,11 @@ const routes = [
     path: "/search",
     name: "search",
     component: AppSearchView,
+  },
+  {
+    path: "/game",
+    name: "game",
+    component: AppGameView,
   },
 ];
 

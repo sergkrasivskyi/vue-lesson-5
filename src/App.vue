@@ -1,14 +1,14 @@
 <template>
-  <div>
+  <div class="flow">
     <app-header></app-header>
     <router-view />
   </div>
 </template>
 <script>
-  import AppHeader from "@/components/AppHeader.vue"
+  // import AppHeader from "@/components/AppHeader.vue"
   export default {
     components: {
-      AppHeader
+      // AppHeader
     }
   }
 </script>
@@ -20,9 +20,11 @@
   text-align: center;
   color: #2c3e50;
 }
-
+:where(.flow :not(:first-child, nav > *)) {
+  margin-top: 1.5rem;
+}
 nav {
-  padding: 30px;
+  padding: 2rem;
 
   a {
     font-weight: bold;

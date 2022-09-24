@@ -9,7 +9,7 @@ export default {
   name: "TheAppButton",
   methods: {
       clickButton() {
-        this.$emit("clickButton", "  It Happens")
+        this.$emit("clickButton", )
       }
   }
 }
@@ -17,6 +17,7 @@ export default {
 
 <style lang="scss" scoped>
 .button {
+  margin: 0;
   padding-inline: 1.5rem;
   padding-block: 1rem;
   color: teal;
@@ -28,9 +29,10 @@ export default {
 
   &:hover,
   &:active,
-  &:focus-within {
+  &:focus-visible {
     color: bisque;
     background-color: teal;
+    cursor: pointer;
   }
 }
 </style>

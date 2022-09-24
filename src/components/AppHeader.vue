@@ -7,7 +7,9 @@
       <router-link class="header-nav__link" to="/">Home</router-link> |
       <router-link class="header-nav__link" to="/about">About</router-link> |
       <router-link class="header-nav__link" to="/search">Search</router-link> |
-      <router-link class="header-nav__link" to="/game">Game</router-link>
+      <router-link class="header-nav__link" to="/game">Game</router-link> |
+      <!-- при использовании роутов лучше использовать name -->
+      <router-link class="header-nav__link" :to="{name: 'board'}">Board</router-link>
     </div>
   </nav>
 </template>

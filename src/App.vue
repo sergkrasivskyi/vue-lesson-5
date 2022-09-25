@@ -2,6 +2,7 @@
   <div class="flow">
     <app-header></app-header>
     <router-view />
+  {{$store.state.housesNumbersList}}
   </div>
 </template>
 <script>

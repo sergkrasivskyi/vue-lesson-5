@@ -1,11 +1,10 @@
 <template>
 
   <label class="input-label" for="input-app">
-    <slot></slot>
+    <slot> </slot>
+    <input id="input-app" v-bind="$attrs" :value="modelValue" @input="updateInput">
   </label>
-  <input id="input-app" v-bind="$attrs" :value="modelValue" @input="updateInput">
-  <!-- :colorField="colorField"
-      :placeholder="placeholder" -->
+    
 </template>
 
 <script>
@@ -13,26 +12,16 @@ export default {
   name: "the-app-input",
   props: {
     modelValue: { type: [String, Number], default: "" },
-    // colorField: { type: [String, Number] },
   },
   data() {
-    // const placeholder = 'try to input some';
-
     return {
-      colorField: ''
     }
   },
   methods: {
-    checkedNumber(event) {
-      this.$emit('update:modelValue', event.target.value)
-      // this.$emit('update:checkHouseNumber', $event.target.value)
-    },
     updateInput(event) {
       this.$emit('update:modelValue', event.target.value)
     }
-
   }
-
 }
 </script>
 
@@ -46,14 +35,14 @@ export default {
 
 input {
   margin: 0;
+  margin-left: 1rem;
   padding: 1rem;
-  outline: 2px solid rgb(157, 190, 190);
-  border: none;
+  border: 2px solid teal;
   border-radius: 1rem;
 
   &.valid {
     // color: teal;
-    outline: 2px solid rgb(157, 190, 190);
+    outline: 2px solid teal;
   }
 
   &.invalid {

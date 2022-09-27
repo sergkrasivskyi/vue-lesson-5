@@ -2,7 +2,7 @@
   <div class="flow">
     <app-header></app-header>
     <router-view />
-  {{$store.state.housesNumbersList}}
+  <!-- {{$store.state.housesNumbersList}} -->
   </div>
 </template>
 <script>
@@ -15,12 +15,16 @@
   }
 </script>
 <style lang="scss">
+* {
+  box-sizing: border-box;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  min-width: 38rem;
 }
 :where(.flow :not(:first-child, nav > *)) {
   margin-top: 1.5rem;

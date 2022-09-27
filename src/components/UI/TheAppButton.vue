@@ -22,10 +22,10 @@ export default {
   padding-block: 1rem;
   color: teal;
   background-color: transparent;
-  outline: 2px solid rgb(157, 190, 190);
-  border: none;
+  border: 2px solid teal;
   border-radius: 1rem;
   transition: background-color 0.5s ease;
+  cursor: pointer;
 
   &:hover,
   &:active,

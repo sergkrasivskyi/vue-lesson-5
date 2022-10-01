@@ -18,8 +18,8 @@
         const file = event.target.files[0]
         const reader = new FileReader();
         if (file.name.includes(".txt")) {
-          reader.onload = (res) => this.$emit('filereaded', res.target.result)
           reader.readAsText(file)
+          reader.onload = (res) => this.$emit('filereaded', res.target.result)
         }
       }
     }

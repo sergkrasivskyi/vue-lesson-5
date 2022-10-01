@@ -3,16 +3,14 @@
     <h1>Перевірка номерів будинків</h1>
     <div class="search-form">
       <the-app-input 
-        :class="{'valid': getNumberValidate, 'invalid': !getNumberValidate}" 
         type="text"
         placeholder="введіть номер будинку" 
         aria-controls="search-input" 
         v-model="checkingHouseNumber"
-        @update:modelValue="getNumberValidate"
         >Введіть номер будинку для перевірки
       </the-app-input>
       <the-app-button
-        @clickButton="validateNumber"
+        @clickButton="validateNumber(checkingHouseNumber)"
         >Перевірити
       </the-app-button>
     </div>
@@ -31,6 +29,7 @@
     <div class="pagination">
       <h2>Список номерів:</h2>
       <the-app-button
+        :class="['page', {'current': page.current}]"
         v-for="(page) in pages" 
         :key="page.id"
         @clickButton="goToPage(page)"
@@ -40,7 +39,9 @@
     </div>
 
     <div class="numbers-list">
-      <p v-for="(item) of numbersListViewed" :key="item.id" :class="['item', {
+      <p v-for="(item) of numbersListViewed" 
+      :key="item.id" 
+      :class="['item', {
       'valid': item?.isValid && isStartValidated, 
       'invalid': !item?.isValid && isStartValidated}]">
         {{item.data}}
@@ -51,31 +52,36 @@
 </template>
 
 <script>
+import { validation, validateNumber } from '@/utils/validate.js' 
 export default {
   name: "AppSearchView",
   data() {
+    
     return {
       checkingHouseNumber: '',
       numbersList: [],
       isStartValidated: false,
-      checkExpression: /(^[^0\D][0-9]*$)|(^[^0\D][0-9]*(([\/][1-9][0-9]*$)|([\-][АБВГДЕЖИКЛМНПРСТУФХЦЧШЮЯ]$)))?/mg,
+      // checkExpression: /(^[^0\D][0-9]*$)|(^[^0\D][0-9]*(([\/][1-9][0-9]*$)|([\-][АБВГДЕЖИКЛМНПРСТУФХЦЧШЮЯ]$)))?/mg,
       // https://regex101.com/r/eXM7sL/1
       // to delete my reg ex:
       // https://regex101.com/delete/R7DdaLFtojfzgAN2Mc9JNjnZ
     
-      itemsOnPage: 1000,
+      // позиція, з якої показуємо номера у кількості, що дорівнює itemsOnPage
       currentPosition: 0,
-      
-      startPage: 1,
-      currentPage: 0,
+      itemsOnPage: 100,
+      validateNumber
     }
   },
   mounted() {
   
   },
   methods: {
-    goToPage(page, index) {
+    goToPage(page) {
       this.currentPosition = page.id * this.itemsOnPage
+      page.current = true
+      this.pages.forEach(element => {
+        if (element.id != page.id ) element.current = false
+      })
     },
     checkedNumber(value) {
       this.checkingHouseNumber = value
@@ -95,9 +101,8 @@ export default {
       //  властивість isValid - для виділення кольором валідних і
       //  невалідних номерів у списку
       for (let i = 0; i < contentArray.length; i++) {
-        this.numbersList.push({ id: i, data: contentArray[i] })
+        this.numbersList.push({ id: i, data: contentArray[i]})
       }
-      // this.numbersListViewed(this.numbersList)  
 
     },
     validateNumbersList() {
@@ -110,43 +115,36 @@ export default {
       list.forEach(element => {
         result.push({ id: element.id, 
                       data: element.data, 
-                      isValid: this.validation(element.data) 
+                      isValid: validation(element.data) 
                     })
-        // element.isValid = this.validation(element.data)
       }); 
       return result
     },
-    validateNumber() {
-      this.validation(this.checkingHouseNumber)
-        ? alert(`Number: ${this.checkingHouseNumber} is valid!`)
-        : alert(`Number: ${this.checkingHouseNumber} is invalid!`)
+    // validateNumber() {
+    //   validation(this.checkingHouseNumber)
+    //     ? alert(`Number: ${this.checkingHouseNumber} is valid!`)
+    //     : alert(`Number: ${this.checkingHouseNumber} is invalid!`)
 
-    },
-    validation(string) {
-      return (string.match(this.checkExpression)[0] == string) ? true : false
-    }
+    // },
+    // validation(string) {
+    //   return ((string.match(this.checkExpression)[0] == string) && (string.length != 0))
+    // }
   },
   computed: {
-    nextPosition() {
-      return this.currentPosition + this.itemsOnPage
-    },
-    getNumberValidate() {
-      return this.validation(this.checkingHouseNumber)
-    },
     numbersListViewed() {
       const list = [...this.numbersList]
-      return list.splice(this.currentPosition, this.nextPosition)
+      return list.splice(this.currentPosition, this.itemsOnPage)
     },
     endPage() {
       return Math.ceil(this.numbersList.length / this.itemsOnPage)
     },
     pages() {
       const result = []
-      result.push({id: 0, name: 'Перша', current: true})       
+      result.push({id: 0, name: 'Перша', current: false})       
       for (let i = 1; i < this.endPage - 1; i++) {
-        result.push({id: i, name: `${i + 1}`, current: false})       
-      }
-      result.push({ id: this.endPage - 1, name: 'Остання', current: false})
+        result.push({ id: i, name: `${i + 1}`, current: false })       
+        }
+      result.push({ id: this.endPage - 1, name: 'Остання', current: false })
       return result      
     }
   }
@@ -154,16 +152,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+$min-width: 40rem;
+
 .wrapper {
   margin-inline: auto;
 
 }
 
 .search-form {
+  min-width: $min-width;
   margin: 0;
   display: flex;
   justify-content: space-around;
   align-items: center;
+}
+.pagination {
+  .page {
+    padding: 0.5rem;
+    background-color: inherit;
+    &.current {
+      color: beige;
+      background-color: rgb(101, 177, 177);
+    }
+  }
 }
 
 .read-file {
@@ -177,12 +189,9 @@ export default {
 } 
 
 .numbers-list {
-  min-width: 36rem;
+  min-width: $min-width;
   display: flex;
   flex-wrap: wrap;
-  // grid-auto-columns: 0.2fr;
-  // grid-auto-rows: auto;
-  // column-gap: 0.5rem;
   row-gap: 0.5rem;
   justify-content: space-around;
   border: 2px solid teal;
